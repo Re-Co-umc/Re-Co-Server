@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     List<Company> findAll();
-    List<Company> findByCategory(@Param("category") int categoryIdx);
+    List<Company> findAllByCategory(@Param("category") int categoryIdx);
 }
