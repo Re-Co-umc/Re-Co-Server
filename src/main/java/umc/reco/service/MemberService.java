@@ -69,19 +69,23 @@ public class MemberService {
         return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
     }
 
-    public ProfileDto getProfile() {
+    public CommonDto getProfile() {
         Member loggedInMember = userUtil.getLoggedInMember();
-        return new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
+        Object[] result = new Object[1];
+        result[0] = new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
+        return new CommonDto(result);
     }
 
-    public ProfileDto editProfile(EditProfileDto editProfileDto) {
+    public CommonDto editProfile(EditProfileDto editProfileDto) {
         if (editProfileDto.getNickname() == null)
             throw new NotQualifiedDtoException("DTO 값이 충족되지 않았습니다.");
 
         Member loggedInMember = userUtil.getLoggedInMember();
         loggedInMember.setNickname(editProfileDto.getNickname());
 
-        return new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
+        Object[] result = new Object[1];
+        result[0] = new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
+        return new CommonDto(result);
     }
 
     private Member createNewMember(Long uuid, String email) {
@@ -98,7 +102,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public CommonDto searchAllLike(){
+
+  public CommonDto searchAll(){
+
         Member loggedInMember = userUtil.getLoggedInMember();
         List<MyListDto> likedShops = new ArrayList<>();
 
