@@ -1,13 +1,11 @@
 package umc.reco.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import umc.reco.dto.request.ShopDto;
 import umc.reco.exception.ExceptionResponse;
 import umc.reco.exception.NotQualifiedDtoException;
+import umc.reco.exception.TargetNotFoundException;
 import umc.reco.service.ShopService;
 
 @RestController
@@ -24,6 +22,15 @@ public class ShopController {
         try {
             return ResponseEntity.ok(shopService.createShop(shopDto));
         } catch (NotQualifiedDtoException e) {
+            return errorMessage(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/like")
+    public ResponseEntity<?> likeShop(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(shopService.like(id));
+        } catch (TargetNotFoundException e) {
             return errorMessage(e.getMessage());
         }
     }
