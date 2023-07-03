@@ -26,6 +26,25 @@ public class ReviewController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editReview(@PathVariable Long id, @RequestBody ReviewRequestDto requestDto) {
+        try {
+            return ResponseEntity.ok(reviewService.editReview(id, requestDto));
+        } catch (NotQualifiedDtoException | TargetNotFoundException | IllegalStateException e) {
+            return errorMessage(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
+        try {
+            reviewService.deleteReview(id);
+            return ResponseEntity.ok("삭제 완료");
+        } catch (TargetNotFoundException | IllegalStateException e) {
+            return errorMessage(e.getMessage());
+        }
+    }
+
     private static ResponseEntity<ExceptionResponse> errorMessage(String message) {
         return ResponseEntity.badRequest().body(new ExceptionResponse(message));
     }
