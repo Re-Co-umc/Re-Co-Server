@@ -35,6 +35,15 @@ public class ShopController {
         }
     }
 
+    @DeleteMapping("/{id}/like")
+    public ResponseEntity<?> likeCancel(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(shopService.likeCancel(id));
+        } catch (TargetNotFoundException | IllegalStateException e) {
+            return errorMessage(e.getMessage());
+        }
+    }
+
     private static ResponseEntity<ExceptionResponse> errorMessage(String message) {
         return ResponseEntity.badRequest().body(new ExceptionResponse(message));
     }
