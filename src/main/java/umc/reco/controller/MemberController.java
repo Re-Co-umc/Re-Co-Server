@@ -1,31 +1,33 @@
 package umc.reco.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import umc.reco.dto.request.LoginDto;
-import umc.reco.dto.response.TokenDto;
+import org.springframework.web.bind.annotation.*;
+import umc.reco.dto.request.EditProfileDto;
+import umc.reco.dto.response.ProfileDto;
+import umc.reco.entity.Member;
 import umc.reco.exception.ExceptionResponse;
 import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.service.MemberService;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/")
+public class MemberController {
 
     private final MemberService memberService;
 
-    public AuthController(MemberService memberService) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileDto> getProfile() {
+        return ResponseEntity.ok(memberService.getProfile());
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> editProfile(@RequestBody EditProfileDto editProfileDto) {
         try {
-            return memberService.join(loginDto);
+            return ResponseEntity.ok(memberService.editProfile(editProfileDto));
         } catch (NotQualifiedDtoException e) {
             return errorMessage(e.getMessage());
         }

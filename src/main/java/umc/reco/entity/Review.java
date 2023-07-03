@@ -9,11 +9,15 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class MemberAndShop {
+public class Review extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
+
+    private String content;
+
+    private Integer star;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -23,18 +27,10 @@ public class MemberAndShop {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @OneToOne
-    @JoinColumn(name = "review_id")
-    private Review review;
-
-    private Boolean heart;
-
-    private Long ml;
-
-    public MemberAndShop(Member member, Shop shop) {
+    public Review(String content, Integer star, Member member, Shop shop) {
+        this.content = content;
+        this.star = star;
         this.member = member;
         this.shop = shop;
-        this.heart = false;
-        this.ml = 0L;
     }
 }
