@@ -43,4 +43,41 @@ public class ReviewService {
         return new ReviewResponseDto(member.getEmail(), findShop.getName(), newReview.getContent(),
                 newReview.getStar(), newReview.getCreated(), newReview.getModified());
     }
+
+    public ReviewResponseDto editReview(Long id, ReviewRequestDto requestDto) {
+
+        Member member = userUtil.getLoggedInMember();
+
+        if (requestDto.getContent() == null || requestDto.getStar() == null) {
+            throw new NotQualifiedDtoException("DTO 값이 충족되지 않았습니다.");
+        }
+
+        Review findReview = reviewRepository.findById(id).orElseThrow(
+                () -> new TargetNotFoundException("해당 리뷰가 없습니다.")
+        );
+
+        if (!findReview.getMember().equals(member)) {
+            throw new IllegalStateException("해당 리뷰 작성자가 아닙니다.");
+        }
+
+        findReview.setContent(requestDto.getContent());
+        findReview.setStar(requestDto.getStar());
+
+        return new ReviewResponseDto(member.getEmail(), findReview.getShop().getName(), findReview.getContent(),
+                findReview.getStar(), findReview.getCreated(), findReview.getModified());
+    }
+
+    public void deleteReview(Long id) {
+        Member member = userUtil.getLoggedInMember();
+
+        Review findReview = reviewRepository.findById(id).orElseThrow(
+                () -> new TargetNotFoundException("해당 리뷰가 없습니다.")
+        );
+
+        if (!findReview.getMember().equals(member)) {
+            throw new IllegalStateException("해당 리뷰 작성자가 아닙니다.");
+        }
+
+        reviewRepository.deleteById(findReview.getId());
+    }
 }
