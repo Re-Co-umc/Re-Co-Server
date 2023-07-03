@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import umc.reco.dto.response.CommonDto;
 import umc.reco.dto.response.CompanyDto;
 import umc.reco.entity.Company;
 import umc.reco.exception.ExceptionResponse;
@@ -28,9 +29,12 @@ public class CompanyController {
         try {
             List<Company> companyList = companyService.findAllCompany();
             List<CompanyDto> collect = companyList.stream()
-                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
+                    .map(m -> new CompanyDto(m.getId(), m.getCompanyName(), m.getCategory(),
+                            m.getCompanyLogo()))
                     .collect(Collectors.toList());
-            return ResponseEntity.ok(collect);
+            Object[] result = new Object[1];
+            result[0] = collect;
+            return ResponseEntity.ok(new CommonDto(result));
         } catch (TargetNotFoundException e) {
             return errorMessage(e.getMessage());
         }
@@ -41,9 +45,11 @@ public class CompanyController {
         try {
             List<Company> companyList = companyService.findAllByCategory(category);
             List<CompanyDto> collect = companyList.stream()
-                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
+                    .map(m -> new CompanyDto(m.getId(), m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
                     .collect(Collectors.toList());
-            return ResponseEntity.ok(collect);
+            Object[] result = new Object[1];
+            result[0] = collect;
+            return ResponseEntity.ok(new CommonDto(result));
         } catch (TargetNotFoundException e) {
             return errorMessage(e.getMessage());
         }
