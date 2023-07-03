@@ -34,6 +34,15 @@ public class ShopController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> shopInfo(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(shopService.getShopInfo(id));
+        } catch (TargetNotFoundException e) {
+            return errorMessage(e.getMessage());
+        }
+    }
+
     @PostMapping("/{id}/like")
     public ResponseEntity<?> likeShop(@PathVariable Long id) {
         try {
