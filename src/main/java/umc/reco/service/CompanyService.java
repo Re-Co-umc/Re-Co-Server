@@ -19,7 +19,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public List<Company> findByCategory(int category) {
+    public List<Company> findAllByCategory(int category) {
         return companyRepository.findByCategory(category);
     }
 
