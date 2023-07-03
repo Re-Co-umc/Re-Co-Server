@@ -95,17 +95,10 @@ public class ShopService {
         double mlToAdd = mlDto.getMl();
         double updatedTotalMl = totalMl + mlToAdd;
 
-        Tree updatedTree = Tree.builder()
-                .id(tree.getId())
-                .total_ml(updatedTotalMl)
-                .point(tree.getPoint())
-                .treelevel(tree.getTreelevel())
-                .member(tree.getMember())
-                .build();
+        tree.setTotal_ml(updatedTotalMl);
         MemberAndShop memberAndShop = memberAndShopRepository.findByMemberIdAndShopId(loggedInMember.getId(), findShop.getId())
                 .orElseGet(() -> createMemberAndShop(loggedInMember, findShop));
-
-        treeRepository.save(updatedTree);
+        memberAndShop.setMl(memberAndShop.getMl() + mlDto.getMl());
         return new MemberAndShopResponseDto(loggedInMember.getEmail(), findShop.getName(), memberAndShop.getHeart(),
                 memberAndShop.getMl());
     }
