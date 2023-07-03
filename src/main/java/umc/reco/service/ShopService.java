@@ -53,9 +53,7 @@ public class ShopService {
             );
         }
 
-        Object[] result = new Object[1];
-        result[0] = targetShop;
-        return new CommonDto(result);
+        return new CommonDto(targetShop);
     }
 
     public CommonDto like(Long id) {
@@ -68,8 +66,7 @@ public class ShopService {
                 .orElseGet(() -> createMemberAndShop(member, findShop));
         memberAndShop.setHeart(true);
 
-        Object[] result = new Object[1];
-        result[0] = new MemberAndShopResponseDto(member.getEmail(), findShop.getName(), memberAndShop.getHeart(),
+        Object result = new MemberAndShopResponseDto(member.getEmail(), findShop.getName(), memberAndShop.getHeart(),
                 memberAndShop.getMl());
         return new CommonDto(result);
     }
@@ -83,8 +80,7 @@ public class ShopService {
                 .orElseThrow(() -> new IllegalStateException("좋아요 관계가 이루어지지 않았습니다."));
         memberAndShop.setHeart(false);
 
-        Object[] result = new Object[1];
-        result[0] = new MemberAndShopResponseDto(member.getEmail(), findShop.getName(), memberAndShop.getHeart(),
+        Object result = new MemberAndShopResponseDto(member.getEmail(), findShop.getName(), memberAndShop.getHeart(),
                 memberAndShop.getMl());
         return new CommonDto(result);
     }
@@ -114,8 +110,7 @@ public class ShopService {
                 .orElseGet(() -> createMemberAndShop(loggedInMember, findShop));
         memberAndShop.setMl(memberAndShop.getMl() + mlDto.getMl());
 
-        Object[] result = new Object[1];
-        result[0] = new MemberAndShopResponseDto(loggedInMember.getEmail(), findShop.getName(), memberAndShop.getHeart(),
+        Object result = new MemberAndShopResponseDto(loggedInMember.getEmail(), findShop.getName(), memberAndShop.getHeart(),
                 memberAndShop.getMl());
         return new CommonDto(result);
     }
@@ -136,9 +131,7 @@ public class ShopService {
 
         shopInfoDto.setReviews(extractReviewInfo(findAllReviews));
 
-        Object[] result = new Object[1];
-        result[0] = shopInfoDto;
-        return new CommonDto(result);
+        return new CommonDto(shopInfoDto);
     }
 
     public List<ReviewResponseDto> extractReviewInfo(List<Review> findAllReviews) {
@@ -169,8 +162,6 @@ public class ShopService {
 
     public CommonDto searchAllShop() {
         List<Shop> shopList = shopRepository.findAll();
-        Object[] result = new Object[1];
-        result[0] = shopList;
-        return new CommonDto(result);
+        return new CommonDto(shopList);
     }
 }

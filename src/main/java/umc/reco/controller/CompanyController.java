@@ -32,9 +32,7 @@ public class CompanyController {
                     .map(m -> new CompanyDto(m.getId(), m.getCompanyName(), m.getCategory(),
                             m.getCompanyLogo()))
                     .collect(Collectors.toList());
-            Object[] result = new Object[1];
-            result[0] = collect;
-            return ResponseEntity.ok(new CommonDto(result));
+            return ResponseEntity.ok(new CommonDto(collect));
         } catch (TargetNotFoundException e) {
             return errorMessage(e.getMessage());
         }

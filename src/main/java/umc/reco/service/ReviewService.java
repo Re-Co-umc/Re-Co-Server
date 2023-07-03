@@ -41,8 +41,7 @@ public class ReviewService {
         Review newReview = reviewRepository.save(
                 new Review(requestDto.getContent(), requestDto.getStar(), member, findShop));
 
-        Object[] result = new Object[1];
-        result[0] = new ReviewResponseDto(member.getEmail(), findShop.getName(), newReview.getContent(),
+        Object result = new ReviewResponseDto(member.getEmail(), findShop.getName(), newReview.getContent(),
                 newReview.getStar(), newReview.getCreated(), newReview.getModified());
 
         return new CommonDto(result);
@@ -67,8 +66,7 @@ public class ReviewService {
         findReview.setContent(requestDto.getContent());
         findReview.setStar(requestDto.getStar());
 
-        Object[] result = new Object[1];
-        result[0] = new ReviewResponseDto(member.getEmail(), findReview.getShop().getName(), findReview.getContent(),
+        Object result = new ReviewResponseDto(member.getEmail(), findReview.getShop().getName(), findReview.getContent(),
                 findReview.getStar(), findReview.getCreated(), findReview.getModified());
         return new CommonDto(result);
     }

@@ -71,8 +71,7 @@ public class MemberService {
 
     public CommonDto getProfile() {
         Member loggedInMember = userUtil.getLoggedInMember();
-        Object[] result = new Object[1];
-        result[0] = new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
+        Object result = new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
         return new CommonDto(result);
     }
 
@@ -83,8 +82,7 @@ public class MemberService {
         Member loggedInMember = userUtil.getLoggedInMember();
         loggedInMember.setNickname(editProfileDto.getNickname());
 
-        Object[] result = new Object[1];
-        result[0] = new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
+        Object result = new ProfileDto(loggedInMember.getEmail(), loggedInMember.getNickname());
         return new CommonDto(result);
     }
 
@@ -113,9 +111,7 @@ public class MemberService {
             likedShops.add(shopInfoDto);
         }
 
-        Object[] result = new Object[1];
-        result[0] = likedShops;
-        return new CommonDto(result);
+        return new CommonDto(likedShops);
     }
 
 

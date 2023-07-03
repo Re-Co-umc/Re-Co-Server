@@ -43,9 +43,7 @@ public class TreeController {
                 .treeLevel(tree.getTreelevel())
                 .build();
 
-        Object[] result = new Object[1];
-        result[0] = treeInfo;
-        return ResponseEntity.ok(new CommonDto(result));
+        return ResponseEntity.ok(new CommonDto(treeInfo));
 
     }
 
