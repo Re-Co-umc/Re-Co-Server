@@ -30,4 +30,11 @@ public class MemberAndShop {
     private Boolean heart;
 
     private Long ml;
+
+    public MemberAndShop(Member member, Shop shop) {
+        this.member = member;
+        this.shop = shop;
+        this.heart = false;
+        this.ml = 0L;
+    }
 }
