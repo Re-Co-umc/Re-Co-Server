@@ -28,7 +28,7 @@ public class CompanyController {
         try {
             List<Company> companyList = companyService.findAllCompany();
             List<CompanyDto> collect = companyList.stream()
-                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
+                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategoryIdx(), m.getCompanyLogo()))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(collect);
         } catch (TargetNotFoundException e) {
@@ -41,7 +41,7 @@ public class CompanyController {
         try {
             List<Company> companyList = companyService.findAllByCategory(category);
             List<CompanyDto> collect = companyList.stream()
-                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
+                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategoryIdx(), m.getCompanyLogo()))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(collect);
         } catch (TargetNotFoundException e) {

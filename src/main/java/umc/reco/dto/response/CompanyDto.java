@@ -9,12 +9,12 @@ import lombok.Setter;
 public class CompanyDto {
 
     private String companyName;
-    private int companyCategory;
+    private int companyCategoryIdx;
     private String companyLogo;
 
-    public CompanyDto(String companyName, int companyCategory, String companyLogo) {
+    public CompanyDto(String companyName, int companyCategoryIdx, String companyLogo) {
         this.companyName = companyName;
-        this.companyCategory = companyCategory;
+        this.companyCategoryIdx = companyCategoryIdx;
         this.companyLogo = companyLogo;
     }
 }

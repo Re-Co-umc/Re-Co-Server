@@ -21,7 +21,7 @@ public class Company {
     private String companyName;
 
     @Column(name = "company_category")
-    private int category;
+    private int categoryIdx;
 
     @Column(name = "company_logo")
     private String companyLogo;
