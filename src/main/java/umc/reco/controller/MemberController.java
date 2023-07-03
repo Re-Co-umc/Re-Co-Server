@@ -20,7 +20,7 @@ public class MemberController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<ProfileDto> getProfile() {
+    public ResponseEntity<?> getProfile() {
         return ResponseEntity.ok(memberService.getProfile());
     }
 
