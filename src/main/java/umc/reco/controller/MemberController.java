@@ -32,6 +32,14 @@ public class MemberController {
             return errorMessage(e.getMessage());
         }
     }
+    @GetMapping("/my-list")
+    public ResponseEntity<?> getMyList(){
+        try{
+            return ResponseEntity.ok(memberService.searchAll());
+        }catch (NotQualifiedDtoException e){
+            return errorMessage(e.getMessage());
+        }
+    }
 
     private static ResponseEntity<ExceptionResponse> errorMessage(String message) {
         return ResponseEntity.badRequest().body(new ExceptionResponse(message));

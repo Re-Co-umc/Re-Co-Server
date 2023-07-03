@@ -13,7 +13,6 @@ public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shop_id")
-    @JsonIgnore
     private Long id;
 
     private String name;
