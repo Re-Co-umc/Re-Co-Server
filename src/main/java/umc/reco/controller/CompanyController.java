@@ -29,7 +29,8 @@ public class CompanyController {
         try {
             List<Company> companyList = companyService.findAllCompany();
             List<CompanyDto> collect = companyList.stream()
-                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
+                    .map(m -> new CompanyDto(m.getId(), m.getCompanyName(), m.getCategory(),
+                            m.getCompanyLogo()))
                     .collect(Collectors.toList());
             Object[] result = new Object[1];
             result[0] = collect;
@@ -44,7 +45,7 @@ public class CompanyController {
         try {
             List<Company> companyList = companyService.findAllByCategory(category);
             List<CompanyDto> collect = companyList.stream()
-                    .map(m -> new CompanyDto(m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
+                    .map(m -> new CompanyDto(m.getId(), m.getCompanyName(), m.getCategory(), m.getCompanyLogo()))
                     .collect(Collectors.toList());
             Object[] result = new Object[1];
             result[0] = collect;
