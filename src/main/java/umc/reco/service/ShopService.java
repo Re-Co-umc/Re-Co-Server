@@ -91,15 +91,26 @@ public class ShopService {
         Member loggedInMember = userUtil.getLoggedInMember();
         Tree tree = treeService.getTreeByMember(loggedInMember);
 
+        double updatedTotalPoint = countPoint(tree);
+
         double totalMl = tree.getTotal_ml();
         double mlToAdd = mlDto.getMl();
         double updatedTotalMl = totalMl + mlToAdd;
 
         tree.setTotal_ml(updatedTotalMl);
+        tree.setPoint(updatedTotalPoint);
         MemberAndShop memberAndShop = memberAndShopRepository.findByMemberIdAndShopId(loggedInMember.getId(), findShop.getId())
                 .orElseGet(() -> createMemberAndShop(loggedInMember, findShop));
         memberAndShop.setMl(memberAndShop.getMl() + mlDto.getMl());
         return new MemberAndShopResponseDto(loggedInMember.getEmail(), findShop.getName(), memberAndShop.getHeart(),
                 memberAndShop.getMl());
+    }
+
+
+    private double countPoint(Tree tree){
+        double totalPoint = tree.getPoint();
+        double updatedTotalMl = totalPoint +2000;
+
+        return updatedTotalMl;
     }
 }
