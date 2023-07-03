@@ -3,6 +3,7 @@ package umc.reco.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.ReviewRequestDto;
+import umc.reco.dto.response.CommonDto;
 import umc.reco.dto.response.ReviewResponseDto;
 import umc.reco.entity.Member;
 import umc.reco.entity.Review;
@@ -27,7 +28,7 @@ public class ReviewService {
         this.shopRepository = shopRepository;
     }
 
-    public ReviewResponseDto createReview(Long id, ReviewRequestDto requestDto) {
+    public CommonDto createReview(Long id, ReviewRequestDto requestDto) {
         if (requestDto.getContent() == null || requestDto.getStar() == null) {
             throw new NotQualifiedDtoException("DTO 값이 충족되지 않았습니다.");
         }
@@ -40,11 +41,14 @@ public class ReviewService {
         Review newReview = reviewRepository.save(
                 new Review(requestDto.getContent(), requestDto.getStar(), member, findShop));
 
-        return new ReviewResponseDto(member.getEmail(), findShop.getName(), newReview.getContent(),
+        Object[] result = new Object[1];
+        result[0] = new ReviewResponseDto(member.getEmail(), findShop.getName(), newReview.getContent(),
                 newReview.getStar(), newReview.getCreated(), newReview.getModified());
+
+        return new CommonDto(result);
     }
 
-    public ReviewResponseDto editReview(Long id, ReviewRequestDto requestDto) {
+    public CommonDto editReview(Long id, ReviewRequestDto requestDto) {
 
         Member member = userUtil.getLoggedInMember();
 
@@ -63,8 +67,10 @@ public class ReviewService {
         findReview.setContent(requestDto.getContent());
         findReview.setStar(requestDto.getStar());
 
-        return new ReviewResponseDto(member.getEmail(), findReview.getShop().getName(), findReview.getContent(),
+        Object[] result = new Object[1];
+        result[0] = new ReviewResponseDto(member.getEmail(), findReview.getShop().getName(), findReview.getContent(),
                 findReview.getStar(), findReview.getCreated(), findReview.getModified());
+        return new CommonDto(result);
     }
 
     public void deleteReview(Long id) {

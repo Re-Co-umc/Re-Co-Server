@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import umc.reco.dto.request.MlDto;
 import umc.reco.dto.request.ShopDto;
+import umc.reco.dto.response.CommonDto;
 import umc.reco.dto.response.MemberAndShopResponseDto;
 import umc.reco.entity.Member;
 import umc.reco.entity.Tree;
@@ -55,7 +56,7 @@ public class ShopController {
     @PostMapping("/{id}/ml")
     public ResponseEntity<?> addMl(@PathVariable Long id,@RequestBody MlDto mlDto) {
         try {
-            MemberAndShopResponseDto updatedTree = shopService.addMl(id, mlDto);
+            CommonDto updatedTree = shopService.addMl(id, mlDto);
             return ResponseEntity.ok(updatedTree);
         } catch (TargetNotFoundException e) {
             return errorMessage(e.getMessage());

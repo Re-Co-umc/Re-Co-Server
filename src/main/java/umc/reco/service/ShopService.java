@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.MlDto;
 import umc.reco.dto.request.ShopDto;
+import umc.reco.dto.response.CommonDto;
 import umc.reco.dto.response.MemberAndShopResponseDto;
 import umc.reco.dto.response.ReviewResponseDto;
 import umc.reco.dto.response.ShopInfoDto;
@@ -89,7 +90,7 @@ public class ShopService {
         return memberAndShopRepository.save(new MemberAndShop(member, shop));
     }
 
-    public MemberAndShopResponseDto addMl(Long id,MlDto mlDto){
+    public CommonDto addMl(Long id,MlDto mlDto){
 
         Shop findShop = shopRepository.findById(id).orElseThrow(
                 () -> new TargetNotFoundException("해당 shop이 없습니다.")
@@ -109,11 +110,14 @@ public class ShopService {
         MemberAndShop memberAndShop = memberAndShopRepository.findByMemberIdAndShopId(loggedInMember.getId(), findShop.getId())
                 .orElseGet(() -> createMemberAndShop(loggedInMember, findShop));
         memberAndShop.setMl(memberAndShop.getMl() + mlDto.getMl());
-        return new MemberAndShopResponseDto(loggedInMember.getEmail(), findShop.getName(), memberAndShop.getHeart(),
+
+        Object[] result = new Object[1];
+        result[0] = new MemberAndShopResponseDto(loggedInMember.getEmail(), findShop.getName(), memberAndShop.getHeart(),
                 memberAndShop.getMl());
+        return new CommonDto(result);
     }
 
-    public ShopInfoDto getShopInfo(Long id) {
+    public CommonDto getShopInfo(Long id) {
         Shop findShop = shopRepository.findById(id).orElseThrow(
                 () -> new TargetNotFoundException("해당 shop이 없습니다.")
         );
@@ -128,7 +132,10 @@ public class ShopService {
         shopInfoDto.setStar((double) allStarValue / findAllReviews.size());
 
         shopInfoDto.setReviews(extractReviewInfo(findAllReviews));
-        return shopInfoDto;
+
+        Object[] result = new Object[1];
+        result[0] = shopInfoDto;
+        return new CommonDto(result);
     }
 
     public List<ReviewResponseDto> extractReviewInfo(List<Review> findAllReviews) {

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import umc.reco.dto.response.CommonDto;
 import umc.reco.dto.response.TreeResponseDto;
 import umc.reco.entity.Member;
 import umc.reco.entity.Tree;
@@ -23,7 +24,7 @@ public class TreeController {
     private final TreeService treeService;
 
     @GetMapping
-    public ResponseEntity<TreeResponseDto> getTreeInfo(){
+    public ResponseEntity<CommonDto> getTreeInfo(){
         Member loggedInMember = userUtil.getLoggedInMember();
 
 
@@ -42,7 +43,9 @@ public class TreeController {
                 .treeLevel(tree.getTreelevel())
                 .build();
 
-        return ResponseEntity.ok(treeInfo);
+        Object[] result = new Object[1];
+        result[0] = treeInfo;
+        return ResponseEntity.ok(new CommonDto(result));
 
     }
 
