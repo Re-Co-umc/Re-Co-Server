@@ -26,11 +26,6 @@ public class TreeController {
     public ResponseEntity<TreeResponseDto> getTreeInfo(){
         Member loggedInMember = userUtil.getLoggedInMember();
 
-        //로그인한 회원에 대한 처리
-        if(loggedInMember==null){
-            //로그인되지 않은 상태 처리
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
 
         Tree tree = treeService.getTreeByMember(loggedInMember);
         if(tree==null){

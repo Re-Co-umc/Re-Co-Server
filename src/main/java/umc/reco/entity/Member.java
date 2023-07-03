@@ -20,6 +20,8 @@ public class Member {
 
     private String email;
 
+
+
     private String nickname;
 
     public Member(Long uuid, String email) {
