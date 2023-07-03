@@ -5,16 +5,17 @@ import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.MlDto;
 import umc.reco.dto.request.ShopDto;
 import umc.reco.dto.response.MemberAndShopResponseDto;
-import umc.reco.entity.Member;
-import umc.reco.entity.MemberAndShop;
-import umc.reco.entity.Shop;
-import umc.reco.entity.Tree;
+import umc.reco.dto.response.ShopInfoDto;
+import umc.reco.entity.*;
 import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.exception.TargetNotFoundException;
 import umc.reco.repository.MemberAndShopRepository;
+import umc.reco.repository.ReviewRepository;
 import umc.reco.repository.ShopRepository;
 import umc.reco.repository.TreeRepository;
 import umc.reco.util.UserUtil;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -26,15 +27,18 @@ public class ShopService {
     private final TreeService treeService;
 
     private final TreeRepository treeRepository;
+    private final ReviewRepository reviewRepository;
 
 
     public ShopService(ShopRepository shopRepository,
-                       MemberAndShopRepository memberAndShopRepository, UserUtil userUtil,TreeService treeService,TreeRepository treeRepository) {
+                       MemberAndShopRepository memberAndShopRepository, UserUtil userUtil,TreeService treeService,TreeRepository treeRepository,
+                       ReviewRepository reviewRepository) {
         this.shopRepository = shopRepository;
         this.memberAndShopRepository = memberAndShopRepository;
         this.userUtil = userUtil;
         this.treeService = treeService;
         this.treeRepository = treeRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public Shop createShop(ShopDto shopDto) {
@@ -106,6 +110,28 @@ public class ShopService {
                 memberAndShop.getMl());
     }
 
+    public ShopInfoDto getShopInfo(Long id) {
+        Shop findShop = shopRepository.findById(id).orElseThrow(
+                () -> new TargetNotFoundException("해당 shop이 없습니다.")
+        );
+        List<Review> findAllReviews = reviewRepository.findAllByShopId(id);
+
+        ShopInfoDto shopInfoDto = new ShopInfoDto();
+        shopInfoDto.setName(findShop.getName());
+        shopInfoDto.setLatitude(findShop.getLatitude());
+        shopInfoDto.setLongitude(findShop.getLongitude());
+
+        long allStarValue = calculateShopStar(findAllReviews);
+        shopInfoDto.setStar((double) allStarValue / findAllReviews.size());
+
+        return shopInfoDto;
+    }
+
+    private static long calculateShopStar(List<Review> findAllReviews) {
+        return findAllReviews.stream()
+                .mapToLong(Review::getStar)
+                .sum();
+    }
 
     private double countPoint(Tree tree){
         double totalPoint = tree.getPoint();
