@@ -20,6 +20,9 @@ public class Member {
 
     private String email;
 
+    @OneToOne(mappedBy = "member")
+    private Tree tree;
+
     private String nickname;
 
     public Member(Long uuid, String email) {

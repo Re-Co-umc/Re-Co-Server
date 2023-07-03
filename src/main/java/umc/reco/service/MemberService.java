@@ -14,10 +14,12 @@ import umc.reco.dto.request.LoginDto;
 import umc.reco.dto.response.ProfileDto;
 import umc.reco.dto.response.TokenDto;
 import umc.reco.entity.Member;
+import umc.reco.entity.Tree;
 import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.jwt.JwtFilter;
 import umc.reco.jwt.TokenProvider;
 import umc.reco.repository.MemberRepository;
+import umc.reco.repository.TreeRepository;
 import umc.reco.util.UserUtil;
 
 import java.util.Collections;
@@ -27,11 +29,14 @@ import java.util.Collections;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final TreeRepository treeRepository;
     private final TokenProvider tokenProvider;
     private final UserUtil userUtil;
 
-    public MemberService(MemberRepository memberRepository, TokenProvider tokenProvider, UserUtil userUtil) {
+    public MemberService(MemberRepository memberRepository, TreeRepository treeRepository,
+                         TokenProvider tokenProvider, UserUtil userUtil) {
         this.memberRepository = memberRepository;
+        this.treeRepository = treeRepository;
         this.tokenProvider = tokenProvider;
         this.userUtil = userUtil;
     }
@@ -41,8 +46,10 @@ public class MemberService {
             throw new NotQualifiedDtoException("DTO 값이 충족되지 않았습니다.");
 
         Member member = memberRepository.findByUuid(loginDto.getUuid());
-        if (member == null)
+        if (member == null) {
             member = createNewMember(loginDto.getUuid(), loginDto.getEmail());
+            createNewTree(member);
+        }
 
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_USER");
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), null,
@@ -73,5 +80,14 @@ public class MemberService {
 
     private Member createNewMember(Long uuid, String email) {
         return memberRepository.save(new Member(uuid, email));
+    }
+
+    private void createNewTree(Member member) {
+        Tree newTree = Tree.builder()
+                .member(member)
+                .point(0)
+                .total_ml(0)
+                .build();
+        treeRepository.save(newTree);
     }
 }
