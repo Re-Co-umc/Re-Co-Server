@@ -9,21 +9,16 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Member {
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
     @JsonIgnore
     private Long id;
 
-    private Long uuid;
+    private String content;
 
-    private String email;
+    private Integer star;
 
-    private String nickname;
-
-    public Member(Long uuid, String email) {
-        this.uuid = uuid;
-        this.email = email;
-    }
+    @OneToOne(mappedBy = "review")
+    private MemberAndShop memberAndShop;
 }
