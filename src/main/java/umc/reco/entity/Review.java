@@ -19,6 +19,11 @@ public class Review extends BaseEntity{
 
     private Integer star;
 
-    @OneToOne(mappedBy = "review")
-    private MemberAndShop memberAndShop;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
 }
