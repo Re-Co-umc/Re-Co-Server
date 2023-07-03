@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import umc.reco.dto.request.EditProfileDto;
 import umc.reco.dto.response.ProfileDto;
-import umc.reco.entity.Member;
 import umc.reco.exception.ExceptionResponse;
 import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.service.MemberService;
@@ -35,11 +34,12 @@ public class MemberController {
     @GetMapping("/my-list")
     public ResponseEntity<?> getMyList(){
         try{
-            return ResponseEntity.ok(memberService.searchAll());
+            return ResponseEntity.ok(memberService.searchAllLike());
         }catch (NotQualifiedDtoException e){
             return errorMessage(e.getMessage());
         }
     }
+
 
     private static ResponseEntity<ExceptionResponse> errorMessage(String message) {
         return ResponseEntity.badRequest().body(new ExceptionResponse(message));

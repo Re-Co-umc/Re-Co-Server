@@ -102,7 +102,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public CommonDto searchAll(){
+
+  public CommonDto searchAll(){
+
         Member loggedInMember = userUtil.getLoggedInMember();
         List<MyListDto> likedShops = new ArrayList<>();
 
@@ -117,4 +119,6 @@ public class MemberService {
         result[0] = likedShops;
         return new CommonDto(result);
     }
+
+
 }

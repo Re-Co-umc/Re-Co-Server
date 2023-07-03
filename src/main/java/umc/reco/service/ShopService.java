@@ -4,10 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.MlDto;
 import umc.reco.dto.request.ShopDto;
-import umc.reco.dto.response.CommonDto;
-import umc.reco.dto.response.MemberAndShopResponseDto;
-import umc.reco.dto.response.ReviewResponseDto;
-import umc.reco.dto.response.ShopInfoDto;
+import umc.reco.dto.response.*;
 import umc.reco.entity.*;
 import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.exception.TargetNotFoundException;
@@ -168,5 +165,12 @@ public class ShopService {
         double updatedTotalMl = totalPoint +2000;
 
         return updatedTotalMl;
+    }
+
+    public CommonDto searchAll() {
+        List<Shop> shopList = shopRepository.findAll();
+        Object[] result = new Object[1];
+        result[0] = shopList;
+        return new CommonDto(result);
     }
 }
