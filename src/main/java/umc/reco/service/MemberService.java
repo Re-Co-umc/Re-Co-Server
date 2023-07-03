@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.LoginDto;
 import umc.reco.dto.response.TokenDto;
 import umc.reco.entity.Member;
+import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.jwt.JwtFilter;
 import umc.reco.jwt.TokenProvider;
 import umc.reco.repository.MemberRepository;
@@ -31,6 +32,9 @@ public class MemberService {
     }
 
     public ResponseEntity<TokenDto> join(LoginDto loginDto) {
+        if (loginDto.getEmail() == null || loginDto.getUuid() == null)
+            throw new NotQualifiedDtoException("DTO 값이 충족되지 않았습니다.");
+
         Member member = memberRepository.findByUuid(loginDto.getUuid());
         if (member == null)
             member = createNewMember(loginDto.getUuid(), loginDto.getEmail());
