@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.MlDto;
 import umc.reco.dto.request.ShopDto;
 import umc.reco.dto.response.MemberAndShopResponseDto;
+import umc.reco.dto.response.ReviewResponseDto;
 import umc.reco.dto.response.ShopInfoDto;
 import umc.reco.entity.*;
 import umc.reco.exception.NotQualifiedDtoException;
@@ -15,7 +16,9 @@ import umc.reco.repository.ShopRepository;
 import umc.reco.repository.TreeRepository;
 import umc.reco.util.UserUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -124,7 +127,21 @@ public class ShopService {
         long allStarValue = calculateShopStar(findAllReviews);
         shopInfoDto.setStar((double) allStarValue / findAllReviews.size());
 
+        shopInfoDto.setReviews(extractReviewInfo(findAllReviews));
         return shopInfoDto;
+    }
+
+    public List<ReviewResponseDto> extractReviewInfo(List<Review> findAllReviews) {
+        return findAllReviews.stream()
+                .map(review -> new ReviewResponseDto(
+                        review.getMember().getEmail(),
+                        review.getShop().getName(),
+                        review.getContent(),
+                        review.getStar(),
+                        review.getCreated(),
+                        review.getModified()
+                ))
+                .collect(Collectors.toList());
     }
 
     private static long calculateShopStar(List<Review> findAllReviews) {
