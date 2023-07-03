@@ -6,11 +6,13 @@ import umc.reco.dto.request.MlDto;
 import umc.reco.dto.request.ShopDto;
 import umc.reco.dto.response.CommonDto;
 import umc.reco.dto.response.MemberAndShopResponseDto;
+import umc.reco.dto.response.MyListDto;
 import umc.reco.entity.Member;
 import umc.reco.entity.Tree;
 import umc.reco.exception.ExceptionResponse;
 import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.exception.TargetNotFoundException;
+import umc.reco.service.MemberService;
 import umc.reco.service.ShopService;
 import umc.reco.service.TreeService;
 import umc.reco.util.UserUtil;
@@ -20,9 +22,13 @@ import umc.reco.util.UserUtil;
 public class ShopController {
     private final ShopService shopService;
 
+    private final MemberService memberService;
 
-    public ShopController(ShopService shopService) {
+
+
+    public ShopController(ShopService shopService,MemberService memberService) {
         this.shopService = shopService;
+        this.memberService = memberService;
     }
 
 
@@ -68,6 +74,15 @@ public class ShopController {
         try {
             return ResponseEntity.ok(shopService.likeCancel(id));
         } catch (TargetNotFoundException | IllegalStateException e) {
+            return errorMessage(e.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllShops(){
+        try{
+            return ResponseEntity.ok(shopService.searchAll());
+        }catch (TargetNotFoundException | IllegalStateException e) {
             return errorMessage(e.getMessage());
         }
     }

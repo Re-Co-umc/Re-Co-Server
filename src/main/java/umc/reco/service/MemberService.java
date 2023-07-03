@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.EditProfileDto;
 import umc.reco.dto.request.LoginDto;
-import umc.reco.dto.response.MyListDto;
-import umc.reco.dto.response.ProfileDto;
-import umc.reco.dto.response.ShopInfoDto;
-import umc.reco.dto.response.TokenDto;
+import umc.reco.dto.response.*;
 import umc.reco.entity.Member;
 import umc.reco.entity.MemberAndShop;
 import umc.reco.entity.Shop;
@@ -101,7 +98,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<MyListDto> searchAll(){
+    public CommonDto searchAllLike(){
         Member loggedInMember = userUtil.getLoggedInMember();
         List<MyListDto> likedShops = new ArrayList<>();
 
@@ -112,6 +109,10 @@ public class MemberService {
             likedShops.add(shopInfoDto);
         }
 
-        return likedShops;
+        Object[] result = new Object[1];
+        result[0] = likedShops;
+        return new CommonDto(result);
     }
+
+
 }

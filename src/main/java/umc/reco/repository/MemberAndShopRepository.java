@@ -10,4 +10,5 @@ public interface MemberAndShopRepository extends JpaRepository<MemberAndShop, Lo
     Optional<MemberAndShop> findByMemberIdAndShopId(Long memberId, Long shopId);
 
     List<MemberAndShop> findByMemberIdAndHeart(Long id, boolean heart);
+
 }
