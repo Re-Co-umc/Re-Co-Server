@@ -45,7 +45,7 @@ public class ShopService {
         this.reviewRepository = reviewRepository;
     }
 
-    public Shop createShop(ShopDto shopDto) {
+    public CommonDto createShop(ShopDto shopDto) {
         if (shopDto.getName() == null || shopDto.getLatitude() == null || shopDto.getLongitude() == null)
             throw new NotQualifiedDtoException("DTO 값이 충족되지 않았습니다.");
 
@@ -56,10 +56,12 @@ public class ShopService {
             );
         }
 
-        return targetShop;
+        Object[] result = new Object[1];
+        result[0] = targetShop;
+        return new CommonDto(result);
     }
 
-    public MemberAndShopResponseDto like(Long id) {
+    public CommonDto like(Long id) {
         Shop findShop = shopRepository.findById(id).orElseThrow(
                 () -> new TargetNotFoundException("해당 shop이 없습니다.")
         );
@@ -69,8 +71,10 @@ public class ShopService {
                 .orElseGet(() -> createMemberAndShop(member, findShop));
         memberAndShop.setHeart(true);
 
-        return new MemberAndShopResponseDto(member.getEmail(), findShop.getName(), memberAndShop.getHeart(),
+        Object[] result = new Object[1];
+        result[0] = new MemberAndShopResponseDto(member.getEmail(), findShop.getName(), memberAndShop.getHeart(),
                 memberAndShop.getMl());
+        return new CommonDto(result);
     }
 
     public CommonDto likeCancel(Long id) {
