@@ -13,6 +13,7 @@ public class MemberAndShopResponseDto {
     private Boolean heart; // 좋아요 여부
     private Long ml; // 용량
 
+
     public MemberAndShopResponseDto(String member, String shop, Boolean heart, Long ml) {
         this.member = member;
         this.shop = shop;
