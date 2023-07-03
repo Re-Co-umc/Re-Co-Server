@@ -22,6 +22,7 @@ public class Tree extends BaseEntity{
     private double total_ml;
 
     @OneToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     //포인트,환급액
@@ -46,8 +47,10 @@ public class Tree extends BaseEntity{
             treelevel = TreeLevel.TREE;
         } else if (total_ml >= 4000) {
             treelevel = TreeLevel.SAPLING;
-        } else {
+        } else if (total_ml >= 1000){
             treelevel = TreeLevel.SEEDLING;
+        } else{
+            treelevel = TreeLevel.SEED;
         }
     }
 
