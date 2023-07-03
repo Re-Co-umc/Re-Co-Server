@@ -26,6 +26,7 @@ public class TreeResponseDto {
         this.member = tree.getMember().getEmail();
         this.total_ml = tree.getTotal_ml();
         this.treeLevel=tree.getTreelevel();
+        this.point = tree.getPoint();
     }
 
 }

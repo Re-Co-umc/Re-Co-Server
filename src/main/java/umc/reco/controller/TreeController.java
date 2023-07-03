@@ -37,6 +37,7 @@ public class TreeController {
         TreeResponseDto treeInfo = TreeResponseDto.builder()
                 .id(tree.getId())
                 .total_ml(tree.getTotal_ml())
+                .member(tree.getMember().getEmail())
                 .point(tree.getPoint())
                 .treeLevel(tree.getTreelevel())
                 .build();
