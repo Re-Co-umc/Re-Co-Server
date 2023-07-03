@@ -11,18 +11,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.reco.dto.request.EditProfileDto;
 import umc.reco.dto.request.LoginDto;
+import umc.reco.dto.response.MyListDto;
 import umc.reco.dto.response.ProfileDto;
+import umc.reco.dto.response.ShopInfoDto;
 import umc.reco.dto.response.TokenDto;
 import umc.reco.entity.Member;
+import umc.reco.entity.MemberAndShop;
+import umc.reco.entity.Shop;
 import umc.reco.entity.Tree;
 import umc.reco.exception.NotQualifiedDtoException;
 import umc.reco.jwt.JwtFilter;
 import umc.reco.jwt.TokenProvider;
+import umc.reco.repository.MemberAndShopRepository;
 import umc.reco.repository.MemberRepository;
 import umc.reco.repository.TreeRepository;
 import umc.reco.util.UserUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @Transactional
@@ -32,13 +39,15 @@ public class MemberService {
     private final TreeRepository treeRepository;
     private final TokenProvider tokenProvider;
     private final UserUtil userUtil;
+    private final MemberAndShopRepository memberAndShopRepository;
 
     public MemberService(MemberRepository memberRepository, TreeRepository treeRepository,
-                         TokenProvider tokenProvider, UserUtil userUtil) {
+                         TokenProvider tokenProvider, UserUtil userUtil,MemberAndShopRepository memberAndShopRepository) {
         this.memberRepository = memberRepository;
         this.treeRepository = treeRepository;
         this.tokenProvider = tokenProvider;
         this.userUtil = userUtil;
+        this.memberAndShopRepository=memberAndShopRepository;
     }
 
     public ResponseEntity<TokenDto> join(LoginDto loginDto) {
@@ -89,5 +98,20 @@ public class MemberService {
                 .total_ml(0)
                 .build();
         treeRepository.save(newTree);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyListDto> searchAll(){
+        Member loggedInMember = userUtil.getLoggedInMember();
+        List<MyListDto> likedShops = new ArrayList<>();
+
+        List<MemberAndShop> memberAndShops = memberAndShopRepository.findByMemberIdAndHeart(loggedInMember.getId(), true);
+        for (MemberAndShop memberAndShop : memberAndShops) {
+            Shop shop = memberAndShop.getShop();
+            MyListDto shopInfoDto = new MyListDto(shop.getName(), shop.getLatitude(),shop.getLongitude());
+            likedShops.add(shopInfoDto);
+        }
+
+        return likedShops;
     }
 }
