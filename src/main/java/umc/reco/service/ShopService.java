@@ -161,7 +161,7 @@ public class ShopService {
         return updatedTotalMl;
     }
 
-    public CommonDto searchAll() {
+    public CommonDto searchAllShop() {
         List<Shop> shopList = shopRepository.findAll();
         Object[] result = new Object[1];
         result[0] = shopList;

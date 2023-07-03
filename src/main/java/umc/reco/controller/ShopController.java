@@ -81,7 +81,7 @@ public class ShopController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllShops(){
         try{
-            return ResponseEntity.ok(shopService.searchAll());
+            return ResponseEntity.ok(shopService.searchAllShop());
         }catch (TargetNotFoundException | IllegalStateException e) {
             return errorMessage(e.getMessage());
         }

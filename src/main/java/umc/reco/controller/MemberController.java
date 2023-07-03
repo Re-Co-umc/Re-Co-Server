@@ -34,7 +34,7 @@ public class MemberController {
     @GetMapping("/my-list")
     public ResponseEntity<?> getMyList(){
         try{
-            return ResponseEntity.ok(memberService.searchAllLike());
+            return ResponseEntity.ok(memberService.searchLike());
         }catch (NotQualifiedDtoException e){
             return errorMessage(e.getMessage());
         }
