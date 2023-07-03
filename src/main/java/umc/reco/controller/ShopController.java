@@ -44,11 +44,20 @@ public class ShopController {
     }
 
     @PostMapping("/{id}/ml")
-    public ResponseEntity<?> addMl(@PathVariable Long id,@RequestBody MlDto mlDto){
-        try{
+    public ResponseEntity<?> addMl(@PathVariable Long id,@RequestBody MlDto mlDto) {
+        try {
             MemberAndShopResponseDto updatedTree = shopService.addMl(id, mlDto);
             return ResponseEntity.ok(updatedTree);
-        } catch (TargetNotFoundException e){
+        } catch (TargetNotFoundException e) {
+            return errorMessage(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}/like")
+    public ResponseEntity<?> likeCancel(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(shopService.likeCancel(id));
+        } catch (TargetNotFoundException | IllegalStateException e) {
             return errorMessage(e.getMessage());
         }
     }

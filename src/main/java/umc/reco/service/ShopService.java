@@ -65,6 +65,19 @@ public class ShopService {
                 memberAndShop.getMl());
     }
 
+    public MemberAndShopResponseDto likeCancel(Long id) {
+        Shop findShop = shopRepository.findById(id).orElseThrow(
+                () -> new TargetNotFoundException("해당 shop이 없습니다.")
+        );
+        Member member = userUtil.getLoggedInMember();
+        MemberAndShop memberAndShop = memberAndShopRepository.findByMemberIdAndShopId(member.getId(), findShop.getId())
+                .orElseThrow(() -> new IllegalStateException("좋아요 관계가 이루어지지 않았습니다."));
+        memberAndShop.setHeart(false);
+
+        return new MemberAndShopResponseDto(member.getEmail(), findShop.getName(), memberAndShop.getHeart(),
+                memberAndShop.getMl());
+    }
+
     private MemberAndShop createMemberAndShop(Member member, Shop shop) {
         return memberAndShopRepository.save(new MemberAndShop(member, shop));
     }
