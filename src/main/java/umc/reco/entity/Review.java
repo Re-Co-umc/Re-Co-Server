@@ -9,25 +9,16 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class MemberAndShop {
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
+    private Integer star;
 
-    @OneToOne
-    @JoinColumn(name = "review_id")
-    private Review review;
-
-    private Boolean heart;
-
-    private Long ml;
+    @OneToOne(mappedBy = "review")
+    private MemberAndShop memberAndShop;
 }
