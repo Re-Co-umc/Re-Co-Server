@@ -58,6 +58,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/shop/**").permitAll()
                 .requestMatchers("/test/**").permitAll()
+                .requestMatchers("/company/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
