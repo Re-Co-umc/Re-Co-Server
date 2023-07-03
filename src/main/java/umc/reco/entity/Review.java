@@ -26,4 +26,11 @@ public class Review extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
+
+    public Review(String content, Integer star, Member member, Shop shop) {
+        this.content = content;
+        this.star = star;
+        this.member = member;
+        this.shop = shop;
+    }
 }
